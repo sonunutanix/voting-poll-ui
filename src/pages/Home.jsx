@@ -1,15 +1,13 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 
 class Home extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      questions: [],
+    };
   }
-
-  state = {
-    id: -1,
-    question: "",
-    options: [],
-  };
 
   async componentDidMount() {
     const res = await fetch("http://localhost:8080/api/getallpolls", {
@@ -19,23 +17,46 @@ class Home extends Component {
 
     const content = await res.json();
     const questions = content.questions;
-    console.log("Ques", questions);
-    for (let que of questions) {
-      this.setState({ question: que.Question });
-      this.setState({ id: que.Id });
-      this.setState({ options: que.Options });
-    }
-    // this.setState({ question: questions });
-    console.log("state ", this.state);
+    this.setState({ questions: questions });
+  }
+
+  optionClick(quesId, optionId) {
+    console.log("clicked: ", quesId, optionId);
+  }
+  voteClick(optionId) {
+    console.log("ClickedOp", optionId);
+    // this.props.history.push("/create-poll");
+    <Redirect to="/create-poll" />;
   }
   render() {
+    const ques = this.state.questions;
+    console.log("ques:", this.props.userId);
     return (
       <div>
         {this.props.name ? "Hi " + this.props.name : "You are not logged in"}
-        <div> {this.state.question}</div>
-        {this.state.options.map((ques, indx) => (
+        {ques.map((ques, indx) => (
           <div key={indx}>
-            <p>{ques}</p>
+            <div className="questions">
+              <strong>{ques.Question}</strong>
+            </div>
+            <ul>
+              {ques.Options.map((op, i) => (
+                <div key={i} className="options">
+                  <div
+                    onClick={() => this.optionClick(ques.Id, op.id)}
+                    className="voteCount"
+                  >
+                    {op.option}
+                  </div>
+                  <div
+                    className="voteCount"
+                    onClick={() => this.voteClick(op.id)}
+                  >
+                    {op.Votes}
+                  </div>
+                </div>
+              ))}
+            </ul>
           </div>
         ))}
       </div>

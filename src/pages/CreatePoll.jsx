@@ -31,23 +31,24 @@ const CreatePoll = () => {
 
   const submit = async () => {
     const values = [...fields];
-    console.log("fields", values[0].value, question);
-
-    //event.preventDefault();
-    // await fetch("http://localhost:8080/api/create-poll", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     question,
-    //     values,
-    //   }),
-    // });
+    const options = [];
+    for (let value of values) {
+      options.push(value.value);
+    }
+    await fetch("http://localhost:8080/api/create-poll", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        question,
+        options,
+      }),
+    });
 
     setRedirect(true);
   };
-  //   if (redirect) {
-  //     return <Redirect to="/"></Redirect>;
-  //   }
+  if (redirect) {
+    return <Redirect to="/"></Redirect>;
+  }
 
   return (
     <div>

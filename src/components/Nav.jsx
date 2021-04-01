@@ -33,14 +33,17 @@ const Nav = (props) => {
       <ul className="navbar-nav me-auto mb-2 mb-md-0">
         <li className="nav-item active">
           <Link to="/create-poll" className="nav-link">
-            {" "}
             Create Poll
           </Link>
         </li>
         <li className="nav-item active">
           <Link to="/login" className="nav-link" onClick={logout}>
-            {" "}
             Logout
+          </Link>
+        </li>
+        <li className="nav-item active">
+          <Link to="/user-list" className="nav-link">
+            User List
           </Link>
         </li>
       </ul>
