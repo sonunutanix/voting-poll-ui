@@ -41,11 +41,6 @@ const Nav = (props) => {
             Logout
           </Link>
         </li>
-        <li className="nav-item active">
-          <Link to="/user-list" className="nav-link">
-            User List
-          </Link>
-        </li>
       </ul>
     );
   }

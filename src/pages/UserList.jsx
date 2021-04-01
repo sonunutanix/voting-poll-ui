@@ -2,13 +2,16 @@ import React, { Component } from "react";
 class UserList extends Component {
   constructor(props) {
     super(props);
+    // console.log("propes:", props);
     this.state = {
       userName: [],
     };
   }
 
   async componentDidMount() {
-    const res = await fetch("http://localhost:8080/api/option-user/20", {
+    const optionId = this.props.location.state.optionId;
+    const url = "http://localhost:8080/api/option-user/" + optionId;
+    const res = await fetch(url, {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
     });
@@ -16,14 +19,13 @@ class UserList extends Component {
     const content = await res.json();
     const userName = content.users;
     this.setState({ userName: userName });
-    console.log("user:", this.state.userName);
   }
 
   render() {
     const userList = this.state.userName;
     return (
       <div>
-        Hello
+        Users
         {userList.map((user, index) => (
           <div key={index}>
             <div>{user}</div>
