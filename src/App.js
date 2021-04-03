@@ -21,7 +21,6 @@ function App() {
       });
 
       const content = await res.json();
-      //console.log("usr:", content);
       setName(content.user.name);
       setUserId(content.user.id);
     })();

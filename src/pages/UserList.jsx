@@ -2,7 +2,6 @@ import React, { Component } from "react";
 class UserList extends Component {
   constructor(props) {
     super(props);
-    // console.log("propes:", props);
     this.state = {
       userName: [],
     };
@@ -10,6 +9,7 @@ class UserList extends Component {
 
   async componentDidMount() {
     const optionId = this.props.location.state.optionId;
+    console.log("optionId::", optionId);
     const url = "http://localhost:8080/api/option-user/" + optionId;
     const res = await fetch(url, {
       headers: { "Content-Type": "application/json" },
@@ -23,16 +23,20 @@ class UserList extends Component {
 
   render() {
     const userList = this.state.userName;
-    return (
-      <div>
-        Users
-        {userList.map((user, index) => (
-          <div key={index}>
-            <div>{user}</div>
-          </div>
-        ))}
-      </div>
-    );
+    if (userList) {
+      return (
+        <div>
+          Users
+          {userList.map((user, index) => (
+            <div key={index}>
+              <div>{user}</div>
+            </div>
+          ))}
+        </div>
+      );
+    } else {
+      return <div>No vote count</div>;
+    }
   }
 }
 
