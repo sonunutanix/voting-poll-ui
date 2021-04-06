@@ -6,9 +6,24 @@ class PollOptions extends Component {
     voteCount: this.props.option.Votes,
   };
 
-  async optionClick(quesId, optionId) {
+  async optionClick(questionId, optionId) {
+    const userId = this.props.userId;
+    // Check If UserAlready Voted for the question
+    const resp = await fetch("http://localhost:8080/api/question-user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        questionId,
+        userId,
+      }),
+    });
+    const questioncontent = await resp.json();
+    if (questioncontent.msg === "Already voted") {
+      alert("You have already Voted for this question");
+      return;
+    }
+
     //Increase the count of vote
-    console.log("optionProps: ", this.props);
     const url = "http://localhost:8080/api/option/" + optionId;
     const response = await fetch(url, {
       method: "PATCH",
@@ -19,8 +34,6 @@ class PollOptions extends Component {
     this.setState({ voteCount: content.option.Votes });
 
     //saving the user Id and option Id
-    const userId = this.props.userId;
-    console.log("userId", userId);
     await fetch("http://localhost:8080/api/option-user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

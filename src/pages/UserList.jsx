@@ -9,7 +9,6 @@ class UserList extends Component {
 
   async componentDidMount() {
     const optionId = this.props.location.state.optionId;
-    console.log("optionId::", optionId);
     const url = "http://localhost:8080/api/option-user/" + optionId;
     const res = await fetch(url, {
       headers: { "Content-Type": "application/json" },
