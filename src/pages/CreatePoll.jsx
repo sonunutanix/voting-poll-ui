@@ -12,12 +12,15 @@ const CreatePoll = () => {
     setFields(values);
     if (values[i].value === "" && values.length > 1) {
       removeField(i);
-    } //else if (){
-    //     handleAdd();
-    // }
+    } else {
+      const len = values.length;
+      if (i === len - 1 && values[i].value) {
+        addField();
+      }
+    }
   }
 
-  function handleAdd() {
+  function addField() {
     const values = [...fields];
     values.push({ value: null });
     setFields(values);
@@ -33,7 +36,9 @@ const CreatePoll = () => {
     const values = [...fields];
     const options = [];
     for (let value of values) {
-      options.push(value.value);
+      if (value.value) {
+        options.push(value.value);
+      }
     }
     await fetch("http://localhost:8080/api/create-poll", {
       method: "POST",
@@ -52,20 +57,16 @@ const CreatePoll = () => {
 
   return (
     <div>
-      <div>
+      <div className="question-input">
         <input
           type="text"
           placeholder="Enter your question"
           onChange={(e) => setQues(e.target.value)}
         />
       </div>
-      <button type="button" onClick={() => handleAdd()}>
-        +
-      </button>
-
       {fields.map((field, idx) => {
         return (
-          <div key={`${field}-${idx}`}>
+          <div key={idx} className="option-input">
             <input
               type="text"
               placeholder="Enter option"
@@ -75,11 +76,7 @@ const CreatePoll = () => {
           </div>
         );
       })}
-      <button
-        className="w-50 btn btn-lg btn-primary"
-        type="submit"
-        onClick={() => submit()}
-      >
+      <button className="submit-btn" type="submit" onClick={() => submit()}>
         Submit
       </button>
     </div>
